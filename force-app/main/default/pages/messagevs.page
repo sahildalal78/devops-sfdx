@@ -1,0 +1,5 @@
+<apex:page controller="showEmailStatusMessage" >
+
+<apex:pageMessages ></apex:pageMessages>
+
+</apex:page>

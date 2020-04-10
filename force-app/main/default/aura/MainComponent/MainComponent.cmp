@@ -1,0 +1,16 @@
+<aura:component  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <lightning:card title=" Manage Leads" >
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_2-of-3">
+                <c:AmanSir/>
+            </div> 
+           
+              <div class="slds-col slds-size_1-of-3">     
+                <c:Button/>
+                <c:EditForm/>
+            </div>
+                
+        </div>
+    </lightning:card>
+</aura:component>

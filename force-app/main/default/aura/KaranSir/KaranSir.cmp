@@ -1,0 +1,77 @@
+<aura:component controller="InsertTheData" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >  
+    <aura:attribute name="colors" type="RecordType[]"/>
+    <aura:attribute name="red" type="Recordtype[]"/>
+    <aura:attribute name="yellow" type="Recordtype[]"/>
+    <aura:attribute name="accName" type="String"/>
+    <aura:attribute name="conName" type="String"/>
+    <aura:attribute name="oppoName" type="String"/>
+    <aura:attribute name="val11" type="String"/>
+    <aura:attribute name="val12" type="String"/>
+    <aura:attribute name="val13" type="String"/>    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="truthy" type="Boolean" default="false"/>
+    <aura:attribute name="Stage" type="String[]" default="Prospecting,Qualification,Needs Analysis,Value Proposition,Id. Decision Makers,Perception Analysis,Proposal/Price Quote,Negotiation/Review,Closed Won,Closed Lost"/>    
+    <aura:attribute name="StageValue" type="String" />   
+    <aura:attribute name="today" type="Date" default=""/>	
+    <aura:handler name="init" value="{! this }" action="{! c.cinit }"/>
+    <!--aura:handler name="init" value="{! this }" action="{!c.showToast}"/-->
+    <div class="slds-grid slds-wrap">  
+        <div class="slds-col slds-size_5-of-12">
+            <lightning:card title="Conversion">
+                
+                
+                <div>Account</div>
+                <lightning:select  name="select" label="RecordTypes"  value="{!v.val11}" required="true">
+                    <option >choose one...</option>
+                    <aura:iteration items="{!v.colors}" var="color">
+                        <option value="{!color.Id}">{!color.Name}</option>
+                    </aura:iteration>
+                </lightning:select>
+                
+                <div class="slds-col slds-size_3-of-12">   
+                    <lightning:input type="text" name="name" label="Name" value="{!v.accName}" required="true"/>
+                </div>
+                
+                
+                <div>Opportunity</div>
+                <lightning:select name="select" label="RecordTypes" value="{!v.val12}" required="true">
+                    <option >choose one...</option>
+                    <aura:iteration items="{!v.red}" var="co">
+                        <option value="{!co.Id}">{!co.Name}</option>
+                    </aura:iteration>
+                </lightning:select>
+                <div class="slds-col slds-size_3-of-12">   
+                    <lightning:input type="text" name="name" label="Name" value="{!v.oppoName}" required="true"/>
+                </div>
+                <lightning:select  name="select" label="Stage" value="{!v.StageValue}" required="true">
+                    <option >choose one...</option>
+                    <aura:iteration items="{!v.Stage}" var="color">
+                        <option>{!color}</option>
+                        
+                    </aura:iteration>
+                </lightning:select>
+                <ui:inputDate aura:id="expdate" label="Date" class="field" value="{!v.today}" displayDatePicker="true" required="true" change="{!c.setOutput}"/>  
+                <!--   <ui:button class="btn" label="Submit" press="{!c.setOutput}"/-->
+                
+                <div aura:id="msg" class="slds-hide">
+                    You entered: <ui:outputDate aura:id="oDate" value="" />
+                </div>
+               
+                
+                <div>Contact</div>
+                <lightning:select  name="select" label="RecordTypes" value="{!v.val13}" required="true">
+                    <option >choose one...</option>
+                    <aura:iteration items="{!v.yellow}" var="col">
+                        <option value="{!col.Id}">{!col.Name}</option>
+                    </aura:iteration>
+                </lightning:select>
+                <div  class="slds-col slds-size_3-of-12">   
+                    <lightning:input type="text" name="name" label="Name" value="{!v.conName}" required="true"/>
+                </div>
+                <div>
+                    <lightning:button name="select" label="Convert" onclick="{!c.changeSelect}"/>
+                </div>
+            </lightning:card>
+        </div>
+    </div>
+</aura:component>

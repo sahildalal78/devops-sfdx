@@ -1,0 +1,7 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<ltng:require scripts="{!$Resource.CanvasJS}" afterScriptsLoaded="{!c.generateChart}"/>   
+       <div id="chartContainer1" style="height: 600px; width: 60%; margin-left: 400px; margin-top: 40px;"></div>
+  
+    
+      
+</aura:component>

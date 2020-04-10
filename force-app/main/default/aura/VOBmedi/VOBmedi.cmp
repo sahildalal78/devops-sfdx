@@ -1,0 +1,443 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global">
+    
+    <aura:attribute name="AllData" type="sObject"/>
+    <aura:attribute name="ShowFooter" type="Boolean" default="true"/>
+    <aura:attribute name="isOpen" type="Boolean" />
+    <aura:attribute name="DisplayButton" type="Boolean" default="false" />
+    <aura:attribute name="data" type="sObject"/>
+    <aura:attribute name="TotalNumberOfRecord" type="integer" default="0"/>
+    <aura:attribute name="selected" type="List"/>
+    <aura:attribute name="recordValue" type="String"/>
+    <aura:attribute name="ShowButton" type="Boolean" default="true"/>
+    <aura:attribute name="openModal" type="boolean" default="false"/>
+    <aura:attribute name="PercentPick" type="Account[]" /> <!--Custom-->
+    
+    
+    
+    <aura:attribute name="showTabs" type="Boolean" default="false"/>
+    <!--lightning:spinner variant="brand" size="large" aura:id="Id_spinner" class="slds-hide" />-->
+    
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.doInit }"/>
+    <div class="slds-align_absolute-center">
+        <div class="slds-m-around_xx-large">
+            <div aura:id="exampleModal" role="dialog" tabindex="-1" aria-hidden="false" aria-labelledby="modal-heading-01"  aria-modal="true" aria-describedby="modal-content-id-1"  class="slds-modal slds-fade-in-open" >
+                <div class="slds-modal__container">                        
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button--icon-inverse slds-modal__close" onclick="{!c.hideExampleModal}">
+                            <lightning:icon iconName="utility:close" size="medium" variant="bare"/>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <div class="slds-grid slds-gutters res_add-income" style="border: none;">                                        
+                            
+                            
+                        </div>
+                    </header>
+                    <lightning:spinner variant="brand" size="large" aura:id="Id_spinner" class="slds-hide" />
+                    
+                    
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">                                
+                        <div class="slds-gutters" style="border: none;">
+                            <div class="slds-grid slds-wrap"> 
+                                <div class="slds-col  slds-size_1-of-2">
+                                    <h2 class="header">System Info</h2>
+                                    <lightning:input name="input1" label="VOB" />
+                                    <lightning:select  aura:id="PicklistId" name="select1" label="Status" required="true">
+                                        <option value="" text="- None -" /> 
+                                        <aura:iteration items="{!v.PercentPick}" var="per">
+                                            <option value="{!per}" text="{!per}" />  
+                                        </aura:iteration>
+                                    </lightning:select> 
+                                    <div onkeyup="{! c.handleKeyUp }">
+                                        <lightning:input
+                                                         aura:id="Search Treatment"
+                                                         name="enter-search"
+                                                         label="Treatment Episode"
+                                                         type="search"
+                                                         />
+                                    </div>
+                                    <lightning:select name="select2" label="Copay Interval IP" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">one</option>
+                                        <option value="2">two</option>
+                                        <option value="3">three</option>
+                                    </lightning:select>
+                                </div>
+                                
+                                <div class="slds-col  slds-size_1-of-2">
+                                    <br/>
+                                    <div onkeyup="{! c.handleKeyUp2 }">
+                                        <lightning:input
+                                                         aura:id="Search Treatment"
+                                                         name="enter-search"
+                                                         label="Verifier Name"
+                                                         type="search"
+                                                         />
+                                    </div>
+                                    <lightning:input type="date" name="input1" label="Verifier Date" />
+                                </div>
+                            </div>
+                            
+                            
+                            <!--aaaaaaaaaaaaaaaaaaa11111111111-->
+                            
+                            <br/>
+                            <div class="slds-grid slds-wrap"> 
+                                <div class="slds-col  slds-size_1-of-2">
+                                    <h2 class="header">Primary Insurance Information</h2>
+                                    <div onkeyup="{! c.handleKeyUp }">
+                                        <lightning:input
+                                                         aura:id="Search Treatment"
+                                                         name="enter-search"
+                                                         label="Insurance Company"
+                                                         type="search"
+                                                         />
+                                    </div>
+                                    <div onkeyup="{! c.handleKeyUp }">
+                                        <lightning:input
+                                                         aura:id="Search Treatment"
+                                                         name="enter-search"
+                                                         label="Payer Address"
+                                                         type="search"
+                                                         />
+                                    </div>
+                                    <div onkeyup="{! c.handleKeyUp }">
+                                        <lightning:input
+                                                         aura:id="Search Treatment"
+                                                         name="enter-search"
+                                                         label="Payer Phone"
+                                                         type="search"
+                                                         />
+                                    </div>
+                                    <lightning:input name="input1" label="Member ID#" />
+                                    <lightning:input name="input1" label="Group ID" />
+                                    
+                                </div>
+                                
+                                <div class="slds-col  slds-size_1-of-2">
+                                    <br/>
+                                    <lightning:select name="select1" label="Insurance Type" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input name="input1" label="Plan Name" />
+                                    <lightning:select name="select1" label="Plan Type" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input name="input1" label="Payer ID" />
+                                </div>
+                            </div>
+                            
+                            <!--aaaaaaaaaaaaaaaaaaa22222222222222-->
+                            <br/>
+                            <div class="slds-grid slds-wrap"> 
+                                <div class="slds-col  slds-size_1-of-2">
+                                    <h2 class="header">Patient/Subscriber Information</h2>
+                                    <div onkeyup="{! c.handleKeyUp }">
+                                        <lightning:input
+                                                         aura:id="Search Treatment"
+                                                         name="Search Opportunities"
+                                                         label="Client"
+                                                         type="search"
+                                                         />
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="slds-col  slds-size_1-of-2">
+                                    <br/>
+                                    <lightning:input name="input1" label="Subscriber First Name" />
+                                    <lightning:input name="input1" label="Subscriber Last Name" />
+                                    <lightning:input type="date" name="input1" label="Subscriber DOB" />
+                                    <lightning:select name="select1" label="Relationship" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    
+                                </div>
+                            </div>
+                            
+                            <!--aaaaaaaaaaaaaaaaaa333333333333-->
+                            <br/>
+                            <div class="slds-grid slds-wrap"> 
+                                <div class="slds-col  slds-size_1-of-2">
+                                    
+                                    <h2 class="header">Out Of Network Benefits</h2>
+                                    <lightning:input name="input1" label="Deductible" />
+                                    <lightning:input name="input1" label="Amount Met" />
+                                    <lightning:select name="select1" label="Is deductible applied to OOP?" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:select name="select1" label="Does deductible carryover apply?" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input name="input1" label="OOP" />
+                                    <lightning:input name="input1" label="OOP Met" />
+                                    <lightning:input name="input1" label="Coinsurance" />
+                                    <lightning:select name="select1" label="Copay Interval - OP" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    
+                                </div>
+                                
+                                <div class="slds-col  slds-size_1-of-2">
+                                    <br/>
+                                    <lightning:input name="input1" label="Copay max per admission" />
+                                    <lightning:input name="input1" label="Family Deductible" />
+                                    <lightning:input name="input1" label="Family Deductible Met" />
+                                    <lightning:input name="input1" label="Family OOP" />
+                                    <lightning:input name="input1" label="Family OOP Met" />
+                                    <lightning:input name="input1" label="Who receives payment for OON services?" />
+                                    <lightning:input type="checkbox" label="No Out of Network Benefits" name="input1"/>
+                                    <lightning:input type="checkbox" label="No Substance Abuse Coverage" name="input1"/>
+                                    <lightning:input type="checkbox" label="Medicare/Medicaid" name="input1"/>
+                                    <lightning:input type="checkbox" label="No OOP maximum" name="input1"/>
+                                </div>
+                            </div>
+                            <!--bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-->
+                            <br/>
+                            <div class="slds-grid slds-wrap"> 
+                                <div class="slds-col  slds-size_1-of-2">
+                                    
+                                    <h2 class="header">In Network Benefits</h2>
+                                    <lightning:input name="input1" label="Deductible INN Amount" />
+                                    <lightning:input name="input1" label="Deductible INN Amount Met" />
+                                    <lightning:input name="input1" label="Out of pocket INN Amount" />
+                                    <lightning:input name="input1" label="Out of pocket INN Amount Met" />
+                                    <lightning:input name="input1" label="Coinsurance INN" />
+                                    <lightning:select name="select1" label="Is deductible applied to OOP? (INN)" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:select name="select1" label="Does copay apply to OOP?" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:select name="select1" label="INN/ONN deductible/OOP cross accumulate?" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    
+                                </div>
+                                
+                                <div class="slds-col  slds-size_1-of-2">
+                                    <br/>
+                                    <lightning:input name="input1" label="PHP Copay" />
+                                    <lightning:input name="input1" label="IOP Copay" />
+                                    <lightning:select name="select1" label="Copay Interval - IP and OP (INN)?" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input name="input1" label="Family Deductible (INN)" />
+                                    <lightning:input name="input1" label="Family Deductible Met (INN)" />
+                                    <lightning:input name="input1" label="Family OOP (INN)" />
+                                    <lightning:input name="input1" label="Family OOP Met (INN)" />
+                                    <lightning:select name="select1" label="Injections apply to copay" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input name="input1" label="Injections Co-Pay" />
+                                </div>
+                            </div>
+                            <!--ccccccccccccccccccccccccccccccccc-->
+                            <br/>
+                            <div class="slds-grid slds-wrap"> 
+                                <div class="slds-col  slds-size_1-of-2">
+                                    
+                                    <h2 class="header">Basic Policy Information</h2>
+                                    <lightning:input type="date" name="input1" label="Effective Date" />
+                                    <lightning:input type="date" name="input1" label="Term Date" />
+                                    <lightning:select name="select1" label="Calendar/Plan" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:select name="select1" label="ACA Plan" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input type="date" name="input1" label="If yes, what’s the paid through date?" />
+                                    <lightning:select name="select1" label="Coordination of benefits on file?" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input type="date" name="input1" label="Date COB Updated" />
+                                    <lightning:input type="checkbox" label="COB Needs Updating" name="input1"/>
+                                    <lightning:select name="select1" label="Fund Type" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:select name="select1" label="Pre-existing conditions restrictions" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input name="input1" label="If yes, what are they?" />
+                                    
+                                    
+                                </div>
+                                
+                                <div class="slds-col  slds-size_1-of-2">
+                                    <br/>
+                                    <lightning:select name="select1" label="Comply with Federal Parity" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:select name="select1" label="Is there an HRA/HSA plan?" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input name="input1" label="HRA/HSA Balance" />
+                                    <lightning:select name="select1" label="Plan Month End" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:select name="select1" label="Cobra" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input type="date" name="input1" label="Cobra Term Date" />
+                                    <lightning:input name="input1" label="If pt is Less than 26 yrs, when insurance term?" />
+                                    <lightning:select name="select1" label="Licensed Clinicians Required" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input name="input1" label="Representative Name" />
+                                    <lightning:input name="input1" label="Reference #" />
+                                    <lightning:input name="input1" label="Pharmacy Vendor" />
+                                    <lightning:input name="input1" label="Pharmacy Phone" />
+                                </div>
+                            </div>
+                            <!--eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-->
+                            <br/>
+                            <div class="slds-grid slds-wrap"> 
+                                <div class="slds-col  slds-size_1-of-2">
+                                    
+                                    <h2 class="header">Additional Benefits Information</h2>
+                                    
+                                    <lightning:select name="select1" label="Rate Type" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input name="input1" label="MNRP/MRC%" />
+                                    <lightning:select name="select1" label="PHP coming from" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:select name="select1" label="IOP coming from" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input name="input1" label="JCAHO/CARF needed for input/output?" />
+                                    <lightning:select name="select1" label="Does facility have to be Medicare Certif" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:textarea aura:id="field" label="Facility Restrictions" name="reason"  />
+                                    <lightning:textarea aura:id="field" label="Any Exclusions" name="reason" />
+                                    <lightning:textarea aura:id="field" label="Out of state restrictions" name="reason" />
+                                    <lightning:textarea aura:id="field" label="Lifetime maximum" name="reason" />
+                                    
+                                    
+                                </div>
+                                
+                                <div class="slds-col  slds-size_1-of-2">
+                                    <br/>
+                                    <lightning:select name="select1" label="Are freestanding facilities covered?" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:input name="input1" label="How many UA’s are allowed per 365?" />
+                                    <lightning:select name="select1" label="Are there limitations on UA’s?" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    <lightning:textarea aura:id="field" label="Third part, Multiplan, Viant or Global?" name="reason" />
+                                    <lightning:input name="input1" label="Days/ $$ Max?" />
+                                    <lightning:select name="select1" label="Is court ordered treatment covered?" required="true">
+                                        <option value="">choose one...</option>
+                                        <option value="1">New</option>
+                                        <option value="2">In Progress</option>
+                                        <option value="3">Completed</option>
+                                    </lightning:select>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>                       
+                    <footer class="slds-modal__footer">
+                        <div class="button" align ="right">
+                            <lightning:button variant ="neutral" class="btn1 btn2" label ="Cancel" onclick = "{!c.hideExampleModal}"/>                                
+                            <lightning:button variant="brand"  class="btn1" label="Save and New" type="submit"  />   
+                            <lightning:button variant="brand"  class="btn1" label="Save" type="submit"  />     
+                            
+                        </div>
+                    </footer>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="{!'slds-backdrop ' + ((v.isActive) ? 'slds-backdrop_open' : 'slds-backdrop_close')}"></div>                
+    </div>
+    
+    
+    
+</aura:component>

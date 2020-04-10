@@ -1,0 +1,17 @@
+<aura:component controller="LeadClass" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="data" type="Lead[]"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:handler name="init" value="{! this }" action="{! c.cinit }"/>
+ 	<!-- <aura:registerEvent name="parentEvt" type="c:parentEvent"/-->
+	 <aura:handler event="c:AppEvent" action="{!c.handleApplicationEvent}"/>
+  
+                <lightning:datatable data="{! v.data }"
+                                     columns="{! v.columns}"
+                                     keyField="Id"
+                                     selectedRows="{!v.selectedRows}"
+                                     onrowselection="{!c.UpdateSelectedRows}"                   
+                                     hideCheckboxColumn="true"/>              
+     
+              <!--  <lightning:button class="btn-color slds-float_center" name="Create Lead" label="Create Lead" onclick="{!c.callsecondcomponent}"/-->
+     
+</aura:component>
